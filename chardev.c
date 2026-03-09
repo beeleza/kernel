@@ -76,7 +76,10 @@ static ssize_t device_read(struct file *filp, char *buffer, size_t length, loff_
 
     while (length && *msg_Ptr)
     {
-        put_user(*(msg_Ptr++), buffer++);
+        if (put_user(*(msg_Ptr++), buffer++))
+		{
+			return -EFAULT;
+		}
         length--;
         bytes_read++;
     }
